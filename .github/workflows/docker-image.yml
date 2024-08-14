@@ -8,6 +8,7 @@ env:
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -103,11 +104,9 @@ jobs:
   deploy-dev:
     runs-on: ubuntu-latest
     environment: Development
-    needs:
-      - merge
     steps:
       - uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          args: get pods
+          args: get pods --all-namespaces
