@@ -102,6 +102,7 @@ jobs:
 
   deploy-dev:
     runs-on: ubuntu-latest
+    environment: Development
     needs:
       - merge
     steps:
