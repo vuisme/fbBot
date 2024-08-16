@@ -101,9 +101,11 @@ jobs:
           docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
 
   deploy-dev:
+    name: Deployment to K8s
     runs-on: ubuntu-latest
     needs:
       - merge
+    environment: Development
     steps:
       - name: Extract branch name
         run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
