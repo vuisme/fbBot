@@ -105,8 +105,13 @@ jobs:
     needs:
       - merge
     steps:
+      - name: Extract branch name
+        run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+        
       - uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          args: get pods
+          args: |
+            set image deployment/facebook-bot-deployment facebook-bot=${{ secrets.DOCKERHUB_USERNAME }}:${{ env.BRANCH_NAME }} -n ittools
+            rollout restart deployment/facebook-bot-deployment -n ittools
